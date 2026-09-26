@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "title": "Build the TechBridge Homepage",
+    "description": "Create the first version of the TechBridge website using HTML and CSS.",
+    "details": "Design and build the homepage including a hero, about, programs, community and footer sections using HTML and CSS.",
+    "day": 1,
+    "difficulty": "Beginner",
+    "status": "completed"
+  },
+  {
+    "id": 2,
+    "title": "Build the TechBridge Programs Experience",
+    "description": "Create a Programs experience that presents TechBridge's available learning programs.",
+    "details": "Present the available programs with descriptions, skills and a comparison table so visitors understand each learning path.",
+    "day": 4,
+    "difficulty": "Beginner",
+    "status": "completed"
+  },
+  {
+    "id": 3,
+    "title": "Build the Internship Tasks Experience",
+    "description": "Create an interface that presents the TechBridge internship tasks and helps users understand the internship journey.",
+    "details": "Show all 8 internship tasks along a timeline so visitors understand the sequence, difficulty and progression of the internship.",
+    "day": 8,
+    "difficulty": "Beginner to Intermediate",
+    "status": "completed"
+  },
+  {
+    "id": 4,
+    "title": "Build an Interactive Internship Roadmap",
+    "description": "Use JavaScript to switch between the Data Analytics and Web Development internship tracks.",
+    "details": "Let visitors choose between the Data Analytics and Web Development tracks and view each journey without refreshing the page.",
+    "day": 11,
+    "difficulty": "Beginner to Intermediate",
+    "status": "completed"
+  },
+  {
+    "id": 5,
+    "title": "Build the Intern Registration Experience",
+    "description": "Create a professional registration and onboarding interface for TechBridge interns.",
+    "details": "Design a registration interface that interns use to join the TechBridge internship program and provide their track and contact details.",
+    "day": 15,
+    "difficulty": "Intermediate",
+    "status": "completed"
+  },
+  {
+    "id": 6,
+    "title": "Build the Task Submission System",
+    "description": "Create an interface through which interns can prepare and submit their task work.",
+    "details": "Build an interface where interns can prepare, review and submit their task work for review by the TechBridge team.",
+    "day": 19,
+    "difficulty": "Intermediate",
+    "status": "in-progress"
+  },
+  {
+    "id": 7,
+    "title": "Build the Intern Dashboard",
+    "description": "Create a dashboard where an intern can view their profile, progress, tasks and submissions.",
+    "details": "Give interns a single place to view their profile, progress, task status and submissions, with filters and progress tracking.",
+    "day": 22,
+    "difficulty": "Intermediate to Advanced",
+    "status": "not-started"
+  },
+  {
+    "id": 8,
+    "title": "Build the Complete TechBridge Internship Platform",
+    "description": "Combine the different components created during the internship into a complete TechBridge platform.",
+    "details": "Bring the different components built during the internship together into one complete, consistent TechBridge platform.",
+    "day": 26,
+    "difficulty": "Intermediate to Advanced",
+    "status": "not-started"
+  }
+]

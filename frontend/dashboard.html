@@ -76,25 +76,31 @@
 
           <!-- Internship progress -->
           <div class="dash-card reveal" id="progress">
-            <div class="dash-card-head">
-              <p class="label">OVERVIEW</p>
-              <h2>Internship Progress</h2>
+            <div class="dash-card-head dash-progress-head">
+              <div>
+                <p class="label">OVERVIEW</p>
+                <h2>Internship Progress</h2>
+              </div>
+              <div class="api-pill" id="api-pill" role="status" aria-live="polite">
+                <span class="api-pill-dot" aria-hidden="true"></span>
+                <span id="api-pill-text">Backend Status: Connecting</span>
+              </div>
             </div>
             <div class="dp-stats">
               <div class="dp-stat">
-                <strong id="completed-count">5</strong>
-                <span>of 8 Tasks Completed</span>
+                <strong id="completed-count">—</strong>
+                <span>Tasks Completed</span>
               </div>
               <div class="dp-stat">
-                <strong id="remaining-count">3</strong>
+                <strong id="remaining-count">—</strong>
                 <span>Tasks Remaining</span>
               </div>
               <div class="dp-stat">
-                <strong id="progress-percent">63%</strong>
+                <strong id="progress-percent">—</strong>
                 <span>Overall Progress</span>
               </div>
             </div>
-            <div class="dp-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="63">
+            <div class="dp-track" id="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
               <div class="dp-bar" id="dp-bar"></div>
             </div>
           </div>
@@ -114,10 +120,34 @@
               </div>
             </div>
 
-            <p class="dash-all-done" id="all-done" hidden>Congratulations! You have completed all 8 internship tasks.</p>
+            <!-- Search and add-task tools -->
+            <div class="task-tools">
+              <div class="task-search-wrap">
+                <label class="task-search-label" for="task-search">Search tasks</label>
+                <input class="task-search" id="task-search" type="search" placeholder="Search by title or description..." autocomplete="off" />
+              </div>
 
-            <!-- Task cards render here -->
-            <div class="task-track-grid" id="task-list"></div>
+              <details class="task-add">
+                <summary class="btn btn-outline btn-sm">Add New Task</summary>
+                <form class="task-add-form" id="new-task-form">
+                  <label for="new-task-title">Task title</label>
+                  <input id="new-task-title" name="title" type="text" placeholder="Build a New TechBridge Page" autocomplete="off" />
+                  <label for="new-task-description">Description</label>
+                  <textarea id="new-task-description" name="description" rows="2" placeholder="What does this task involve?"></textarea>
+                  <button class="btn btn-primary btn-sm" type="submit">Add via API</button>
+                </form>
+              </details>
+            </div>
+
+            <p class="dash-all-done" id="all-done" hidden>Congratulations! You have completed all internship tasks.</p>
+
+            <!-- Task cards render here from the API response -->
+            <div class="task-track-grid" id="task-list">
+              <div class="task-state">
+                <span class="spinner" aria-hidden="true"></span>
+                <p>Loading tasks...</p>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -153,6 +183,9 @@
     </section>
 
   </main>
+
+  <!-- Toast notifications for API actions -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- Task detail modal -->
   <div class="modal" id="modal" hidden>
@@ -202,7 +235,8 @@
     </div>
   </footer>
 
-  <script src="dashboard.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,23 @@
+{
+  "name": "techbridge-task-api",
+  "version": "1.0.0",
+  "description": "TechBridge Task Management API — Express backend serving internship task data to the intern dashboard.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "reset": "node -e \"require('fs').copyFileSync('data/tasks.seed.json','data/tasks.json');console.log('Demo task data restored.')\""
+  },
+  "keywords": [
+    "techbridge",
+    "express",
+    "api",
+    "rest"
+  ],
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
