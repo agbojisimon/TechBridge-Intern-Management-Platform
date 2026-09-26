@@ -1,6 +1,4 @@
-// TechBridge Task Management API
-// Backend server built with Node.js and Express.js.
-// Serves the internship task data as JSON and accepts updates from the frontend.
+// TechBridge Task Management API — Express server.
 
 // Third-party packages.
 const express = require('express');
@@ -13,29 +11,23 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Absolute paths to the data files and the static frontend folder.
+// Paths to the data files and the frontend folder.
 const DATA_FILE = path.join(__dirname, 'data', 'tasks.json');
 const SEED_FILE = path.join(__dirname, 'data', 'tasks.seed.json');
 const FRONTEND_DIR = path.join(__dirname, '..', 'frontend');
 
-// The only status values the API accepts. The server validates input instead of
-// trusting whatever the frontend sends, so the data can never be corrupted.
+// Status values the API accepts.
 const VALID_STATUSES = ['completed', 'in-progress', 'not-started'];
 
-// ---------------------------------------------------------------------------
-// MIDDLEWARE
-// ---------------------------------------------------------------------------
+// Middleware
 
-// Allows the dashboard to call this API even when the page is opened from a
-// different local server such as Live Server on port 5500.
+// Allow requests from a frontend running on another port.
 app.use(cors());
 
-// Parses incoming JSON request bodies so req.body works on POST and PUT.
+// Parse JSON request bodies so req.body works on POST and PUT.
 app.use(express.json());
 
-// ---------------------------------------------------------------------------
-// DATA HELPERS — tasks.json acts as this project's simple database.
-// ---------------------------------------------------------------------------
+// Data helpers
 
 // Read every task from the JSON file.
 function readTasks() {
@@ -53,16 +45,14 @@ function findTask(tasks, id) {
   return tasks.find(function (task) { return task.id === id; });
 }
 
-// Send a consistent error shape so the frontend always knows what to expect.
+// Send an error response.
 function sendError(res, status, message) {
   res.status(status).json({ error: { status: status, message: message } });
 }
 
-// ---------------------------------------------------------------------------
-// API ROUTES
-// ---------------------------------------------------------------------------
+// API routes
 
-// Health check — the dashboard calls this to show Connected or Offline.
+// Health check — used for the Connected / Offline indicator.
 app.get('/api/health', function (req, res) {
   try {
     const tasks = readTasks();
@@ -72,8 +62,7 @@ app.get('/api/health', function (req, res) {
   }
 });
 
-// GET /api/tasks — return all tasks.
-// Supports optional ?status= and ?search= query parameters.
+// GET /api/tasks — all tasks. Supports ?status= and ?search=.
 app.get('/api/tasks', function (req, res) {
   try {
     let tasks = readTasks();
@@ -98,7 +87,7 @@ app.get('/api/tasks', function (req, res) {
   }
 });
 
-// GET /api/tasks/:id — return one specific task.
+// GET /api/tasks/:id — one specific task.
 app.get('/api/tasks/:id', function (req, res) {
   const id = parseInt(req.params.id, 10);
 
@@ -120,7 +109,7 @@ app.get('/api/tasks/:id', function (req, res) {
   }
 });
 
-// POST /api/tasks — create a new task.
+// POST /api/tasks — create a task.
 app.post('/api/tasks', function (req, res) {
   const body = req.body || {};
   const title = (body.title || '').trim();
@@ -159,7 +148,7 @@ app.post('/api/tasks', function (req, res) {
   }
 });
 
-// PUT /api/tasks/:id — update an existing task, mainly its status.
+// PUT /api/tasks/:id — update a task.
 app.put('/api/tasks/:id', function (req, res) {
   const id = parseInt(req.params.id, 10);
   const body = req.body || {};
@@ -224,17 +213,11 @@ app.use('/api', function (req, res) {
   sendError(res, 404, 'API route not found: ' + req.method + ' ' + req.originalUrl);
 });
 
-// ---------------------------------------------------------------------------
-// STATIC FRONTEND
-// ---------------------------------------------------------------------------
+// Static frontend
 
-// Express also serves the dashboard, so the whole project runs from one server.
-// The TechBridge homepage is served at / and the dashboard at /dashboard.html.
 app.use(express.static(FRONTEND_DIR));
 
-// ---------------------------------------------------------------------------
-// START THE SERVER
-// ---------------------------------------------------------------------------
+// Start the server
 
 app.listen(PORT, function () {
   console.log('TechBridge API running at http://localhost:' + PORT);

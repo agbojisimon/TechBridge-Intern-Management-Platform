@@ -2058,10 +2058,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .tech-link:hover { text-decoration: underline; }
 
-/* ---------------------------------------------------------------------------
-   TASK 7 — API BACKEND STATUS INDICATOR
-   Shows whether the Express server can be reached.
---------------------------------------------------------------------------- */
+/* Backend connection indicator */
 
 .dash-progress-head {
   display: flex;
@@ -2131,9 +2128,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
 }
 
-/* ---------------------------------------------------------------------------
-   TASK 7 — SEARCH AND ADD TASK TOOLS
---------------------------------------------------------------------------- */
+/* Search and add task tools */
 
 .task-tools {
   display: flex;
@@ -2244,9 +2239,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-danger-ghost:hover { background: #FEF2F2; border-color: #FCA5A5; color: #B91C1C; }
 
-/* ---------------------------------------------------------------------------
-   TASK 7 — LOADING, ERROR AND EMPTY STATES
---------------------------------------------------------------------------- */
+/* Loading, error and empty states */
 
 .task-state {
   grid-column: 1 / -1;
@@ -2293,9 +2286,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ---------------------------------------------------------------------------
-   TASK 7 — TOAST NOTIFICATIONS
---------------------------------------------------------------------------- */
+/* Toast notifications */
 
 .toast {
   position: fixed;

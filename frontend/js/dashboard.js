@@ -1,6 +1,4 @@
 // Intern Dashboard — task tracker, progress and technology explorer.
-// All task information is requested from the TechBridge REST API in js/api.js.
-// Nothing about the tasks is hardcoded here, so the backend is the single source of truth.
 
 // Sample intern profile.
 const intern = {
@@ -9,14 +7,19 @@ const intern = {
   claim: 'Internship Status: In Progress'
 };
 
-// Dashboard state.
-// tasks      — the task list returned by the API, used as the only render source.
-// taskFilter — active status filter: 'all' | 'completed' | 'in-progress' | 'not-started'.
-// searchTerm — active search text typed into the search box.
+// Tasks returned by the API.
 let tasks = [];
+
+// Tracker filter state — 'all' shows every task.
 let taskFilter = 'all';
+
+// Active search text.
 let searchTerm = '';
+
+// Task list state — 'loading' | 'ready' | 'error'.
 let listState = 'loading';
+
+// Last error message shown to the user.
 let lastError = '';
 
 // DOM refs.
@@ -52,8 +55,7 @@ function statusClass(status) {
   return 'status-upcoming';
 }
 
-// Task data now comes from the API, so any text placed in innerHTML must be
-// escaped first. Without this, a task title containing HTML would be executed.
+// Escape task text before placing it in innerHTML.
 function escapeHtml(value) {
   return String(value === undefined || value === null ? '' : value)
     .replace(/&/g, '&amp;')
@@ -73,8 +75,8 @@ function showToast(message, type) {
   }, 3200);
 }
 
-// Update the small indicator that shows whether the backend is reachable.
-// state is 'connecting' while a request is in flight, then 'online' or 'offline'.
+// Update the backend connection indicator.
+// State is 'connecting' during a request, then 'online' or 'offline'.
 function setApiState(state) {
   apiPillEl.classList.toggle('is-connecting', state === 'connecting');
   apiPillEl.classList.toggle('is-online', state === 'online');
@@ -176,9 +178,7 @@ function renderTasks() {
   taskListEl.innerHTML = filtered.map(taskCard).join('');
 }
 
-// Request every task from the API and render the result.
-// The health endpoint and the task list are requested together, so the connection
-// pill reflects a real health check rather than a guess.
+// Request the task list and the health check from the API.
 async function loadTasks() {
   listState = 'loading';
   renderTasks();
@@ -248,7 +248,6 @@ async function markCompleted(taskId, button) {
   button.textContent = 'Saving...';
 
   try {
-    // The server response replaces the local copy, so the UI always matches the API.
     const updated = await updateTask(taskId, { status: 'completed' });
     const index = tasks.findIndex(function (t) { return t.id === updated.id; });
     if (index !== -1) { tasks[index] = updated; }
@@ -257,14 +256,14 @@ async function markCompleted(taskId, button) {
     renderTasks();
     showToast('Task ' + updated.id + ' marked as completed.');
   } catch (error) {
-    // The task was not changed, so rebuild the card to restore its button.
+    // Rebuild the card to restore the button.
     setApiState('offline');
     renderTasks();
     showToast('Could not update the task: ' + error.message, 'error');
   }
 }
 
-// Optional challenge — send a POST request to add a new task.
+// Send a POST request to add a task.
 async function addTask(event) {
   event.preventDefault();
 
@@ -295,7 +294,7 @@ async function addTask(event) {
   }
 }
 
-// Optional challenge — send a DELETE request to remove a task.
+// Send a DELETE request to remove a task.
 async function removeTask(taskId) {
   if (!window.confirm('Delete task ' + taskId + '? This cannot be undone.')) { return; }
 
@@ -328,7 +327,7 @@ document.querySelectorAll('#task-filter .ch-filter-btn').forEach(function (btn) 
   });
 });
 
-// Search box filters the tasks that were received from the API.
+// Search box filters the task list.
 searchInputEl.addEventListener('input', function () {
   searchTerm = searchInputEl.value.trim().toLowerCase();
   renderTasks();
@@ -420,7 +419,7 @@ document.querySelectorAll('#tech-filter .tech-btn').forEach(function (btn) {
   });
 });
 
-// Initial render — show the loading state, then ask the API for the tasks.
+// Initial render.
 renderStats();
 renderTasks();
 renderTech(techKey);

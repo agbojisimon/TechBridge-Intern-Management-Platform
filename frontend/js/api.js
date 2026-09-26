@@ -1,19 +1,15 @@
-// API layer — every request the dashboard makes to the TechBridge backend lives here.
-// dashboard.js never calls fetch() directly, so the frontend and the API contract
-// are kept in separate, easy-to-read files.
+// API requests to the TechBridge backend.
 
-// Base URL of the Express server. Change this only if the backend runs elsewhere.
+// Base URL of the Express server.
 const API_BASE = 'http://localhost:3000/api';
 
-// Send a request and return parsed JSON, turning any failure into a readable Error.
-// Throwing here means dashboard.js handles success and failure in one place.
+// Send a request and return the parsed JSON response.
 async function request(path, options) {
   let response;
 
   try {
     response = await fetch(API_BASE + path, options);
   } catch (error) {
-    // fetch only rejects when the server cannot be reached at all.
     throw new Error('Cannot reach the TechBridge API. Is the backend server running?');
   }
 
@@ -22,7 +18,6 @@ async function request(path, options) {
   });
 
   if (!response.ok) {
-    // The server sends { error: { message } } for every failure.
     const message = data && data.error ? data.error.message : 'Request failed (' + response.status + ').';
     throw new Error(message);
   }
@@ -54,7 +49,7 @@ function updateTask(id, changes) {
   });
 }
 
-// POST /api/tasks — optional challenge: create a new task.
+// POST /api/tasks — create a new task.
 function createTask(task) {
   return request('/tasks', {
     method: 'POST',
@@ -63,7 +58,7 @@ function createTask(task) {
   });
 }
 
-// DELETE /api/tasks/:id — optional challenge: remove a task.
+// DELETE /api/tasks/:id — remove a task.
 function deleteTask(id) {
   return request('/tasks/' + id, { method: 'DELETE' });
 }
