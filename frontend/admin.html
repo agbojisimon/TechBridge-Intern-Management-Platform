@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TechBridge Admin — manage internship tasks and challenges through the platform API." />
+  <title>Admin | TechBridge Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <script src="scripts/theme.js"></script>
+</head>
+<body>
+
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="TechBridge home">
+        <img class="brand-logo" src="../assets/images/techbridge-logo.png" alt="TechBridge logo" />
+        <span class="brand-text">
+          <strong>TechBridge</strong>
+          <small>by Baselink Services Limited</small>
+        </span>
+      </a>
+
+      <input type="checkbox" id="nav-toggle" class="nav-toggle-input" hidden />
+      <label for="nav-toggle" class="nav-toggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </label>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="programs.html">Programs</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="challenges.html">Challenges</a>
+        <a href="admin.html" class="active">Admin</a>
+      </nav>
+
+      <button class="btn btn-sm theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"></path></svg></button>
+      <a class="btn btn-primary btn-sm nav-cta" href="index.html">
+        Back to Site
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="dash-welcome">
+      <div class="container">
+        <div class="welcome-card reveal">
+          <div class="welcome-avatar">A</div>
+          <div class="welcome-text">
+            <h1>Platform Admin</h1>
+            <p class="welcome-role">Manage tasks and challenges</p>
+            <p class="welcome-msg">Every change on this page is sent to the backend API. Add, update and remove the content the dashboard and challenge hub read from.</p>
+          </div>
+          <div class="api-pill is-connecting" id="api-pill" role="status" aria-live="polite">
+            <span class="api-pill-dot" aria-hidden="true"></span>
+            <span id="api-pill-text">Backend Status: Connecting</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dashboard">
+      <div class="container dashboard-grid">
+        <div class="dashboard-main">
+
+          <!-- Tasks -->
+          <div class="dash-card reveal">
+            <div class="dash-card-head dash-tasks-head">
+              <div>
+                <p class="label">TASKS</p>
+                <h2>Manage Internship Tasks</h2>
+              </div>
+              <span class="ch-count" id="task-count">Loading...</span>
+            </div>
+
+            <div class="dash-card-actions">
+              <button class="btn btn-primary btn-sm" type="button" data-action="open-task-form">
+                Add Task
+              </button>
+            </div>
+
+            <div class="admin-list" id="task-list">
+              <div class="task-state">
+                <span class="spinner" aria-hidden="true"></span>
+                <p>Loading tasks...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Challenges -->
+          <div class="dash-card reveal">
+            <div class="dash-card-head dash-tasks-head">
+              <div>
+                <p class="label">CHALLENGES</p>
+                <h2>Manage Challenges</h2>
+              </div>
+              <span class="ch-count" id="challenge-count">Loading...</span>
+            </div>
+
+            <div class="dash-card-actions">
+              <button class="btn btn-primary btn-sm" type="button" data-action="open-challenge-form">
+                Add Challenge
+              </button>
+            </div>
+
+            <div class="admin-list" id="challenge-list">
+              <div class="task-state">
+                <span class="spinner" aria-hidden="true"></span>
+                <p>Loading challenges...</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="dashboard-side">
+          <div class="dash-card reveal">
+            <p class="label">API REFERENCE</p>
+            <h2>Endpoints Used Here</h2>
+            <div class="api-endpoints">
+              <div class="api-endpoint"><span class="api-method get">GET</span><code>/api/tasks</code></div>
+              <div class="api-endpoint"><span class="api-method post">POST</span><code>/api/tasks</code></div>
+              <div class="api-endpoint"><span class="api-method put">PUT</span><code>/api/tasks/:id</code></div>
+              <div class="api-endpoint"><span class="api-method delete">DELETE</span><code>/api/tasks/:id</code></div>
+              <div class="api-endpoint"><span class="api-method get">GET</span><code>/api/challenges</code></div>
+              <div class="api-endpoint"><span class="api-method post">POST</span><code>/api/challenges</code></div>
+              <div class="api-endpoint"><span class="api-method delete">DELETE</span><code>/api/challenges/:id</code></div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Add task modal -->
+  <div class="modal" id="task-form-modal" hidden>
+    <div class="modal-overlay" data-close="task-form-modal"></div>
+    <div class="modal-content">
+      <button class="modal-close" type="button" data-close="task-form-modal" aria-label="Close">&times;</button>
+      <p class="label">NEW TASK</p>
+      <h2>Add an Internship Task</h2>
+      <p class="form-hint">The task is created through <code>POST /api/tasks</code> and appears in the dashboard straight away.</p>
+
+      <form class="modal-form" id="task-form">
+        <label class="field">
+          <span class="field-label">Task title</span>
+          <input id="task-title" type="text" placeholder="Build the Intern Dashboard" autocomplete="off" required />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Description</span>
+          <textarea id="task-description" rows="6" placeholder="Describe what the intern is expected to build, and which skills it demonstrates." required></textarea>
+        </label>
+
+        <label class="field">
+          <span class="field-label">Status</span>
+          <select id="task-status">
+            <option value="not-started">Not Started</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </label>
+
+        <div class="modal-actions">
+          <button class="btn btn-outline btn-sm" type="button" data-close="task-form-modal">Cancel</button>
+          <button class="btn btn-primary btn-sm" type="submit">Create Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add challenge modal -->
+  <div class="modal" id="challenge-form-modal" hidden>
+    <div class="modal-overlay" data-close="challenge-form-modal"></div>
+    <div class="modal-content">
+      <button class="modal-close" type="button" data-close="challenge-form-modal" aria-label="Close">&times;</button>
+      <p class="label">NEW CHALLENGE</p>
+      <h2>Add a Challenge</h2>
+      <p class="form-hint">The challenge is created through <code>POST /api/challenges</code> and is listed in the Challenge Hub straight away.</p>
+
+      <form class="modal-form" id="challenge-form">
+        <label class="field">
+          <span class="field-label">Challenge name</span>
+          <input id="challenge-name" type="text" placeholder="Sales Dashboard with Power BI" autocomplete="off" required />
+        </label>
+
+        <label class="field">
+          <span class="field-label">Description</span>
+          <textarea id="challenge-description" rows="6" placeholder="Describe the challenge, the data or feature it covers, and what the intern will practise." required></textarea>
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span class="field-label">Track</span>
+            <select id="challenge-track">
+              <option value="data-analytics">Data Analytics</option>
+              <option value="web-development">Web Development</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Difficulty</span>
+            <select id="challenge-difficulty">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="field">
+          <span class="field-label">Expected outcome</span>
+          <textarea id="challenge-outcome" rows="3" placeholder="One line on what a finished submission should look like."></textarea>
+        </label>
+
+        <div class="modal-actions">
+          <button class="btn btn-outline btn-sm" type="button" data-close="challenge-form-modal">Cancel</button>
+          <button class="btn btn-primary btn-sm" type="submit">Create Challenge</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <span>&copy; 2024 TechBridge by Baselink Services Limited</span>
+      <span>TechBridge Intern Management Platform</span>
+    </div>
+  </footer>
+
+  <script src="scripts/api.js"></script>
+  <script src="scripts/admin.js"></script>
+
+</body>
+</html>

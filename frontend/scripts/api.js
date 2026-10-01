@@ -62,3 +62,22 @@ function createTask(task) {
 function deleteTask(id) {
   return request('/tasks/' + id, { method: 'DELETE' });
 }
+
+// GET /api/challenges — fetch every challenge for the hub.
+function getChallenges() {
+  return request('/challenges');
+}
+
+// POST /api/challenges — create a challenge.
+function createChallenge(challenge) {
+  return request('/challenges', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(challenge)
+  });
+}
+
+// DELETE /api/challenges/:id — remove a challenge.
+function deleteChallenge(id) {
+  return request('/challenges/' + id, { method: 'DELETE' });
+}

@@ -8,7 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <script src="scripts/theme.js"></script>
 </head>
 <body>
 
@@ -16,7 +17,7 @@
   <header class="site-header" id="top">
     <div class="container nav-wrap">
       <a class="brand" href="#home" aria-label="TechBridge home">
-        <img class="brand-logo" src="images/techbridge-logo.png" alt="TechBridge logo" />
+        <img class="brand-logo" src="../assets/images/techbridge-logo.png" alt="TechBridge logo" />
         <span class="brand-text">
           <strong>TechBridge</strong>
           <small>by Baselink Services Limited</small>
@@ -46,6 +47,7 @@
         <a href="#contact">Contact</a>
       </nav>
 
+      <button class="btn btn-sm theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"></path></svg></button>
       <a class="btn btn-primary btn-sm nav-cta" href="https://forms.gle/8EbdSy5ttGfLZfjv5?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">
         Apply Now
       </a>
@@ -58,24 +60,60 @@
     <section class="hero" id="home">
       <div class="container hero-grid">
         <div class="hero-content reveal">
-          <p class="label">TECHBRIDGE BY BASELINK SERVICES LIMITED</p>
-          <h1>Bridging Learning to Real-World Experience</h1>
-          <p class="hero-desc">TechBridge helps learners develop practical technology skills through focused learning and hands-on experience — turning knowledge into momentum.</p>
+          <p class="label">TECHBRIDGE INTERN MANAGEMENT PLATFORM</p>
+          <h1>Welcome to the TechBridge Intern Management Platform</h1>
+          <p class="hero-desc">A single place for interns to track internship progress, work through their tasks, explore practical challenges and monitor completed work — all powered by a live backend API.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="https://forms.gle/8EbdSy5ttGfLZfjv5?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">
-              Apply for Internship
+            <a class="btn btn-primary" href="dashboard.html">
+              View Dashboard
             </a>
-            <a class="btn btn-outline" href="https://chat.whatsapp.com/FqpBvYS4oaK32cXDxc8JIS?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">
-              Join Our Community
+            <a class="btn btn-outline" href="challenges.html">
+              Explore Challenges
             </a>
           </div>
         </div>
         <div class="hero-visual reveal">
           <div class="hero-card">
-            <img class="hero-logo" src="images/techbridge-logo.png" alt="TechBridge logo" />
-            <p class="hero-card-label">30-Day Practical Internship</p>
-            <p class="hero-card-text">Gain hands-on experience through project-based work and practical learning.</p>
+            <img class="hero-logo" src="../assets/images/techbridge-logo.png" alt="TechBridge logo" />
+            <p class="hero-card-label">Live Platform Statistics</p>
+            <div class="hero-stats" id="hero-stats">
+              <div class="hero-stat"><strong>—</strong><span>Tasks in API</span></div>
+              <div class="hero-stat"><strong>—</strong><span>Challenges</span></div>
+            </div>
+            <p class="hero-card-text">These numbers are fetched from the Express API when the page loads.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform features -->
+    <section class="section platform-features" id="platform">
+      <div class="container">
+        <div class="section-header-centered reveal">
+          <p class="label">WHAT THE PLATFORM DOES</p>
+          <h2>Everything an Intern Needs in One Place</h2>
+        </div>
+        <div class="program-grid reveal-child">
+          <article class="program-card">
+            <h3>Track Progress</h3>
+            <p>See how many of the eight internship tasks are complete, with a live progress bar calculated from the API.</p>
+            <a class="card-link" href="dashboard.html">Open dashboard &rarr;</a>
+          </article>
+          <article class="program-card">
+            <h3>Work Through Tasks</h3>
+            <p>Open any task for full details, filter by status, and mark a task complete — the change is saved on the server.</p>
+            <a class="card-link" href="dashboard.html#tasks">View tasks &rarr;</a>
+          </article>
+          <article class="program-card">
+            <h3>Explore Challenges</h3>
+            <p>Browse practical challenges for the Data Analytics and Web Development tracks, filterable by track and difficulty.</p>
+            <a class="card-link" href="challenges.html">Browse challenges &rarr;</a>
+          </article>
+          <article class="program-card">
+            <h3>Manage Content</h3>
+            <p>An admin area where tasks and challenges are added, updated and removed through POST, PUT and DELETE endpoints.</p>
+            <a class="card-link" href="admin.html">Open admin &rarr;</a>
+          </article>
         </div>
       </div>
     </section>
@@ -228,7 +266,7 @@
     <div class="container footer-top">
       <div class="footer-brand">
         <a class="brand" href="#home">
-          <img class="brand-logo" src="images/techbridge-logo.png" alt="TechBridge logo" />
+          <img class="brand-logo" src="../assets/images/techbridge-logo.png" alt="TechBridge logo" />
           <span class="brand-text">
             <strong>TechBridge</strong>
             <small>by Baselink Services Limited</small>
@@ -245,6 +283,7 @@
           <a href="tasks.html">Internship Tasks</a>
           <a href="roadmap.html">Internship Roadmap</a>
           <a href="challenges.html">Challenge Hub</a>
+          <a href="admin.html">Admin</a>
           <a href="#internship">Internship</a>
           <a href="#community">Community</a>
           <a href="#contact">Contact</a>
@@ -263,13 +302,8 @@
     </div>
   </footer>
 
-  <script>
-    // Reveal-on-scroll: observe, then unobserve once revealed.
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); io.unobserve(e.target); } });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.reveal, .reveal-child').forEach(el => io.observe(el));
-  </script>
+  <script src="scripts/api.js"></script>
+  <script src="scripts/home.js"></script>
 
 </body>
 </html>

@@ -8,14 +8,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <script src="scripts/theme.js"></script>
 </head>
 <body>
 
   <header class="site-header" id="top">
     <div class="container nav-wrap">
       <a class="brand" href="index.html" aria-label="TechBridge home">
-        <img class="brand-logo" src="images/techbridge-logo.png" alt="TechBridge logo" />
+        <img class="brand-logo" src="../assets/images/techbridge-logo.png" alt="TechBridge logo" />
         <span class="brand-text">
           <strong>TechBridge</strong>
           <small>by Baselink Services Limited</small>
@@ -45,6 +46,7 @@
         <a href="index.html#contact">Contact</a>
       </nav>
 
+      <button class="btn btn-sm theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"></path></svg></button>
       <a class="btn btn-primary btn-sm nav-cta" href="https://forms.gle/8EbdSy5ttGfLZfjv5?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">
         Apply Now
       </a>
@@ -70,6 +72,10 @@
 
         <!-- Filters -->
         <div class="ch-filters reveal">
+          <div class="ch-filter-group ch-filter-search">
+            <span class="ch-filter-label">Search</span>
+            <input class="task-search" id="challenge-search" type="search" placeholder="Search challenges..." autocomplete="off" />
+          </div>
           <div class="ch-filter-group">
             <span class="ch-filter-label">Track</span>
             <div class="ch-filter-btns" id="track-filter">
@@ -90,11 +96,16 @@
           <button class="ch-reset" type="button" id="reset-filters">Reset filters</button>
         </div>
 
-        <p class="ch-count reveal" id="ch-count">Showing 8 of 8 challenges</p>
+        <p class="ch-count reveal" id="ch-count">Loading challenges...</p>
 
         <!-- Challenge cards render here -->
-        <div class="ch-grid reveal-child" id="ch-grid"></div>
-        <p class="ch-empty" id="ch-empty" hidden>No challenges match your filters. Try a different combination.</p>
+        <div class="ch-grid reveal-child" id="ch-grid">
+          <div class="task-state">
+            <span class="spinner" aria-hidden="true"></span>
+            <p>Loading challenges...</p>
+          </div>
+        </div>
+        <p class="ch-empty" id="ch-empty" hidden>No matching results found. Try a different search or filter.</p>
       </div>
     </section>
 
@@ -113,7 +124,7 @@
     <div class="container footer-top">
       <div class="footer-brand">
         <a class="brand" href="index.html">
-          <img class="brand-logo" src="images/techbridge-logo.png" alt="TechBridge logo" />
+          <img class="brand-logo" src="../assets/images/techbridge-logo.png" alt="TechBridge logo" />
           <span class="brand-text">
             <strong>TechBridge</strong>
             <small>by Baselink Services Limited</small>
@@ -130,6 +141,7 @@
           <a href="tasks.html">Internship Tasks</a>
           <a href="roadmap.html">Internship Roadmap</a>
           <a href="challenges.html">Challenge Hub</a>
+          <a href="admin.html">Admin</a>
           <a href="index.html#internship">Internship</a>
           <a href="index.html#community">Community</a>
           <a href="index.html#contact">Contact</a>
@@ -148,7 +160,8 @@
     </div>
   </footer>
 
-  <script src="challenges.js"></script>
+  <script src="scripts/api.js"></script>
+  <script src="scripts/challenges.js"></script>
 
 </body>
 </html>

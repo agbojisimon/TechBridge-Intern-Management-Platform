@@ -1,49 +1,50 @@
-# TechBridge Task Management API — Task 7
+# TechBridge Intern Management Platform
 
-A backend API for the TechBridge internship platform, connected to the Intern Dashboard built in Task 6.
+A complete intern management platform built with HTML, CSS, JavaScript, Node.js and Express.js. It combines the Challenge Hub, the Intern Dashboard and a REST API into one working application.
 
-Before this task the dashboard kept its eight internship tasks inside a JavaScript array, so the information was trapped in the page. Task 7 moves that data behind a REST API: the dashboard now *requests* tasks from an Express server, and any status change is *sent back* to it.
-
-```
-TechBridge Website
-        ↓
-  Intern Dashboard  (frontend/dashboard.html + js/dashboard.js)
-        ↓  fetch()
-     REST API        (http://localhost:3000/api)
-        ↓
-  Node.js + Express (backend/server.js)
-        ↓
-   Task Data        (backend/data/tasks.json)
-```
-
-## Project structure
+The platform is backed by a live Express server. Tasks and challenges are stored as JSON data files, served over HTTP, and updated through the API — the frontend contains no hardcoded task or challenge data.
 
 ```
-techbridge-task-management/
-├── frontend/
-│   ├── index.html
-│   ├── dashboard.html          ← dashboard now reads from the API
-│   ├── challenges.html
-│   ├── roadmap.html
-│   ├── tasks.html
-│   ├── programs.html
-│   ├── style.css
-│   ├── js/
-│   │   ├── api.js              ← every fetch() call lives here
-│   │   └── dashboard.js        ← rendering, filters, modal, progress
-│   └── images/
-│
-└── backend/
-    ├── server.js               ← Express app and all API routes
-    ├── package.json
-    ├── package-lock.json
-    ├── node_modules/
-    └── data/
-        ├── tasks.json          ← live data, updated by PUT / POST / DELETE
-        └── tasks.seed.json     ← pristine copy used by npm run reset
+Browser
+   │  fetch()
+   ▼
+REST API  (http://localhost:3000/api)
+   │
+   ▼
+Node.js + Express
+   │
+   ▼
+JSON data files  (backend/data/*.json)
 ```
 
-## How to run
+## Technologies Used
+
+- **HTML5** — semantic page structure
+- **CSS3** — custom properties, Grid, Flexbox, responsive breakpoints, dark mode
+- **JavaScript (ES2020)** — `async`/`await`, `fetch`, event delegation, DOM rendering
+- **Node.js** — runtime for the server
+- **Express.js** — routing, JSON body parsing, CORS, static file serving
+- **REST API** — GET, POST, PUT, DELETE with proper status codes
+- **JSON** — file-based data storage
+
+No frameworks, no build step, and no `node_modules` on the frontend.
+
+## Main Features
+
+- **Intern Dashboard** — profile, task tracker, progress bar, completed/remaining counts and overall percentage, all calculated from API data
+- **Task Management** — view full task details in a modal without a page refresh, and mark tasks complete through `PUT`
+- **Progress Tracking** — counts, percentage and progress bar update from the server's response
+- **Challenge Hub** — 8 challenges across Data Analytics and Web Development, filterable by track and difficulty
+- **Search** — search across tasks and challenges, with a "no matching results" state
+- **Add and Delete** — tasks and challenges can be created and removed through the API
+- **Admin Section** — a page for managing tasks and challenges, with an inline API reference
+- **Loading, Error and Empty States** — every API-driven page handles slow, failed and empty responses
+- **Backend Status Indicator** — shows Connected, Connecting or Offline
+- **Dark Mode** — light/dark toggle that persists across refreshes via `localStorage`
+- **Responsive** — works on desktop, tablet and mobile
+- **Graceful Offline Demo** — CORS allows the frontend to be served from a separate local server, so the error state is visible when the API is stopped
+
+## How to Run
 
 **1. Install dependencies**
 
@@ -52,129 +53,172 @@ cd backend
 npm install
 ```
 
-**2. Start the API**
+**2. Start the server**
 
 ```bash
 cd backend
 npm start
 ```
 
-You should see:
+Expected output:
 
 ```
-TechBridge API running at http://localhost:3000
-Homepage:       http://localhost:3000/
-Dashboard:      http://localhost:3000/dashboard.html
-Tasks:          http://localhost:3000/api/tasks
+TechBridge platform running at http://localhost:3000
+Homepage:   http://localhost:3000/
+Dashboard:  http://localhost:3000/dashboard.html
+Challenges: http://localhost:3000/challenges.html
+Admin:      http://localhost:3000/admin.html
+Tasks:      http://localhost:3000/api/tasks
 Reset demo data: npm run reset
 ```
 
-**3. Open the dashboard**
+**3. Open the platform**
 
-Go to <http://localhost:3000/dashboard.html> (the TechBridge homepage is at <http://localhost:3000/>).
+| Page | URL |
+| --- | --- |
+| Homepage | <http://localhost:3000/> |
+| Intern Dashboard | <http://localhost:3000/dashboard.html> |
+| Challenge Hub | <http://localhost:3000/challenges.html> |
+| Admin | <http://localhost:3000/admin.html> |
 
-The Express server also serves the frontend, so the whole project runs from one server. The API still allows cross-origin requests, so the dashboard can equally be opened from VS Code Live Server (`http://localhost:5500/frontend/dashboard.html`) — that is the better option for testing the "backend offline" behaviour, because the page keeps loading after the API is stopped.
+**4. Restore the demo data**
 
-**4. Restore the demo data at any time**
+Changes made through the API are written to disk. Restore the original state at any time:
 
 ```bash
 cd backend
 npm run reset
 ```
 
-## API endpoints
+### Demonstrating the error state
+
+Because Express also serves the frontend, stopping the server stops the page too — so the error state cannot be seen from `localhost:3000`. CORS is enabled for this reason. To see it:
+
+1. Open the dashboard using VS Code **Live Server** (`http://localhost:5500/frontend/dashboard.html`)
+2. Stop the Express server with `Ctrl+C`
+3. The dashboard shows "Unable to load tasks" and `Backend Status: Offline`
+4. Restart the server and press **Try Again**
+
+## API Endpoints
 
 Base URL: `http://localhost:3000`
 
 | Method | Endpoint | Purpose | Success | Errors |
 | --- | --- | --- | --- | --- |
-| GET | `/api/health` | Connectivity check used by the Connected / Offline indicator | `200` `{ status, taskCount, timestamp }` | — |
-| GET | `/api/tasks` | Get all tasks | `200` array of task objects | `500` |
-| GET | `/api/tasks?status=completed` | Filter tasks by status (server side) | `200` filtered array | `500` |
-| GET | `/api/tasks?search=dashboard` | Search titles and descriptions (server side) | `200` matching array | `500` |
-| GET | `/api/tasks/:id` | Get one specific task | `200` task object | `400` non-numeric id, `404` unknown id |
-| POST | `/api/tasks` | Create a new task (optional challenge) | `201` created task | `400` missing title/description or invalid status |
-| PUT | `/api/tasks/:id` | Update an existing task, mainly its status | `200` updated task | `400` invalid status, `404` unknown id |
-| DELETE | `/api/tasks/:id` | Remove a task (optional challenge) | `200` `{ deleted, id }` | `404` unknown id |
+| GET | `/api/health` | Connectivity check | `200` `{ status, taskCount, challengeCount }` | — |
+| GET | `/api/tasks` | All tasks | `200` array | `500` |
+| GET | `/api/tasks?status=completed` | Filter by status | `200` array | `500` |
+| GET | `/api/tasks?search=dashboard` | Search tasks | `200` array | `500` |
+| GET | `/api/tasks/:id` | One task | `200` object | `400`, `404` |
+| POST | `/api/tasks` | Create a task | `201` object | `400` |
+| PUT | `/api/tasks/:id` | Update a task | `200` object | `400`, `404` |
+| DELETE | `/api/tasks/:id` | Delete a task | `200` `{ deleted, id }` | `404` |
+| GET | `/api/challenges` | All challenges | `200` array | `500` |
+| GET | `/api/challenges?track=web-development` | Filter by track | `200` array | `500` |
+| GET | `/api/challenges?difficulty=Advanced` | Filter by difficulty | `200` array | `500` |
+| GET | `/api/challenges?search=quiz` | Search challenges | `200` array | `500` |
+| GET | `/api/challenges/:id` | One challenge | `200` object | `400`, `404` |
+| POST | `/api/challenges` | Create a challenge | `201` object | `400` |
+| DELETE | `/api/challenges/:id` | Delete a challenge | `200` `{ deleted, id }` | `404` |
 
-### HTTP methods used in this project
-
-- **GET** — retrieve information. `GET /api/tasks` means *"give me the tasks"*. GET never changes data.
-- **PUT** — update existing information. `PUT /api/tasks/3` with `{"status":"completed"}` means *"update Task 3"*. The full resource is replaced by the update, which is why the status must be sent every time.
-- **POST** — create a new resource. The server generates the `id`.
-- **DELETE** — remove a resource.
-
-### Task object shape
-
-```json
-{
-  "id": 6,
-  "title": "Build the Task Submission System",
-  "description": "Create an interface through which interns can prepare and submit their task work.",
-  "details": "Build an interface where interns can prepare, review and submit their task work for review by the TechBridge team.",
-  "day": 19,
-  "difficulty": "Intermediate",
-  "status": "in-progress"
-}
-```
-
-`status` is always one of `completed`, `in-progress`, `not-started`. The server validates this against a whitelist, so invalid data can never be stored no matter what the frontend sends.
-
-### Error shape
-
-Every failure returns the same structure with a matching HTTP status code:
+### Error format
 
 ```json
 { "error": { "status": 404, "message": "No task found with id 99." } }
 ```
 
-## How the frontend is wired to the API
+### Validation
 
-`frontend/js/api.js` contains every `fetch()` call, so all network code is in one file. It converts any failure — server down, 404, bad JSON — into a thrown `Error` with a readable message, which means `dashboard.js` handles success and failure in the same place.
+The server checks input rather than trusting the client. Task status must be one of `completed`, `in-progress`, `not-started`. A challenge needs a valid `track` (`data-analytics` or `web-development`) and a valid `difficulty` (`Beginner`, `Intermediate`, `Advanced`). Invalid values return `400`.
 
-| Dashboard action | Request | Code |
+## Project Structure
+
+```
+techbridge-task-management/
+├── frontend/
+│   ├── index.html              Platform landing page with live API statistics
+│   ├── dashboard.html          Intern dashboard — tasks, progress, search
+│   ├── challenges.html         Challenge Hub with track/difficulty filters
+│   ├── admin.html              Manage tasks and challenges
+│   ├── programs.html           Learning programs
+│   ├── roadmap.html            Track roadmap
+│   ├── tasks.html              Internship task timeline
+│   ├── styles/
+│   │   └── style.css           All styling, including dark mode
+│   └── scripts/
+│       ├── api.js              Every fetch() call to the API
+│       ├── theme.js            Dark mode toggle and localStorage
+│       ├── home.js             Landing page statistics
+│       ├── dashboard.js        Dashboard rendering and interaction
+│       ├── challenges.js       Challenge Hub rendering and filters
+│       └── admin.js            Admin CRUD operations
+│
+├── backend/
+│   ├── server.js               Express app, middleware, static serving
+│   ├── reset.js                Restores the seed data files
+│   ├── package.json
+│   ├── lib/
+│   │   └── store.js            JSON file read/write helpers
+│   ├── routes/
+│   │   ├── tasks.js            Task endpoints
+│   │   └── challenges.js       Challenge endpoints
+│   └── data/
+│       ├── tasks.json          Live task data
+│       ├── tasks.seed.json     Seed copy for npm run reset
+│       ├── challenges.json     Live challenge data
+│       └── challenges.seed.json
+│
+├── assets/
+│   └── images/
+│       └── techbridge-logo.png
+│
+├── README.md
+└── DEV_NOTE.md
+```
+
+## How the Frontend Talks to the Backend
+
+`frontend/scripts/api.js` contains every `fetch()` call. It turns any failure — server down, 404, invalid JSON — into a thrown `Error` with a readable message, so each page handles success and failure in one place.
+
+| Action | Request | Handler |
 | --- | --- | --- |
-| Page loads | `GET /api/tasks` | `loadTasks()` |
-| "View Task" clicked | `GET /api/tasks/:id` | `openTaskModal(id)` |
-| "Mark as Completed" clicked | `PUT /api/tasks/:id` | `markCompleted(id)` |
-| "Add via API" submitted | `POST /api/tasks` | `addTask()` |
-| "Delete" clicked | `DELETE /api/tasks/:id` | `removeTask()` |
-| Any page load | `GET /api/tasks` | `setApiState()` via the pill |
+| Page loads | `GET /api/tasks` + `GET /api/challenges` | `loadTasks()` / `loadChallenges()` / `loadAll()` / `loadStats()` |
+| View Task | `GET /api/tasks/:id` | `openTaskModal(id)` |
+| Mark as Completed | `PUT /api/tasks/:id` | `markCompleted(id)` |
+| Add task | `POST /api/tasks` | `addTask()` |
+| Delete task | `DELETE /api/tasks/:id` | `removeTask()` |
+| View Challenge | `GET /api/challenges/:id` | `openModal(id)` |
+| Add / delete challenge | `POST` / `DELETE /api/challenges/:id` | `addChallenge()` / `removeChallenge()` |
 
-The dashboard keeps a single `tasks` array as its render source, but that array is now **populated by the API** instead of being hardcoded. `renderStats()` and `renderTasks()` rebuild the progress numbers, the cards and the filters from it, so the displayed percentage is always whatever the server reports.
+The server response is what updates the UI, so the displayed progress always reflects what the API actually stored.
 
-### States the dashboard handles
+## Testing the API
 
-- **Loading** — a spinner and "Loading tasks..." while the request is in flight.
-- **Ready** — the task cards, progress bar and statistics.
-- **Error** — "Unable to load tasks." with the reason and a "Try Again" button, plus `Backend Status: Offline`.
-- **Empty** — no tasks match the current filter or search, with a hint to reset them.
-- **Pending** — the clicked button is disabled and reads "Saving..." so a task cannot be updated twice.
-- **Rollback** — if a `PUT` fails, the task is left unchanged and a red toast explains why.
+With the server running:
 
-## Endpoints to test
+| Request | Expected |
+| --- | --- |
+| `GET /api/health` | `{ "status": "ok", "taskCount": 8, "challengeCount": 8 }` |
+| `GET /api/tasks` | Array of 8 tasks |
+| `GET /api/tasks/3` | Task with `id: 3` |
+| `GET /api/tasks/99` | `404` error object |
+| `GET /api/tasks?status=completed` | Only completed tasks |
+| `GET /api/challenges` | Array of 8 challenges |
+| `GET /api/challenges?track=web-development` | Only Web Development challenges |
+| `GET /api/challenges?search=quiz` | Only the Online Quiz App |
+| `PUT /api/tasks/6` with `{"status":"completed"}` | Updated task |
+| `PUT /api/tasks/6` with `{"status":"done"}` | `400` — invalid status rejected |
+| `POST /api/tasks` with title and description | `201` with generated id |
+| `DELETE /api/tasks/9` | `{ "deleted": true, "id": 9 }` |
+| `npm run reset` then `GET /api/tasks` | Original data restored |
 
-With the server running (`cd backend && npm start`):
+## What This Project Covers
 
-| # | Request | Expected |
-| --- | --- | --- |
-| 1 | `GET /api/health` | `{ "status": "ok", "taskCount": 8, ... }` |
-| 2 | `GET /api/tasks` | JSON array of 8 tasks |
-| 3 | `GET /api/tasks/3` | The single task with `id: 3` |
-| 4 | `GET /api/tasks/99` | `404` with an error message |
-| 5 | `GET /api/tasks?status=completed` | Only the 5 completed tasks |
-| 6 | `GET /api/tasks?search=dashboard` | Only tasks matching "dashboard" |
-| 7 | `PUT /api/tasks/6` body `{"status":"completed"}` | The updated task, `status: "completed"` |
-| 8 | `PUT /api/tasks/6` body `{"status":"done"}` | `400` — invalid status rejected |
-| 9 | `POST /api/tasks` body `{"title":"Test","description":"Test task"}` | `201` with a generated `id` |
-| 10 | `DELETE /api/tasks/9` | `{ "deleted": true, "id": 9 }` |
-| 11 | `GET /api/tasks` after steps 7–10 | Data reflects every change |
-| 12 | `npm run reset` then `GET /api/tasks` | Original 8 tasks restored |
-
-## What this project taught
-
-- A **backend** is the server-side code that owns the data; a **frontend** is what the user sees. Splitting them means the data outlives any single page.
-- An **API** is a contract: a set of URLs and HTTP methods anyone can call without knowing the internals.
-- **REST** means resources (URLs like `/api/tasks/3`) manipulated with HTTP methods (GET, POST, PUT, DELETE) and exchanged as JSON.
-- `fetch()` returns a promise, so network code is asynchronous — the page must handle "not arrived yet" and "never arrived" as normal cases, which is what the loading and error states are.
-- **The server must validate input.** The frontend sending a valid status does not mean the status is valid.
+- Separating a frontend from a backend and connecting them over HTTP
+- Designing REST endpoints and choosing status codes
+- `fetch()`, promises, and handling asynchronous success and failure
+- Loading, error and empty states for data that can be slow or missing
+- Server-side input validation
+- Persisting data without a database
+- File-based modular routing in Express
+- Progressive enhancement features: dark mode and `localStorage`
